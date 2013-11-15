@@ -325,8 +325,6 @@ void ExternalReferenceTable::PopulateTable(Isolate* isolate) {
       7,
       "IncrementalMarking::RecordWrite");
 
-
-
   // Miscellaneous
   Add(ExternalReference::roots_array_start(isolate).address(),
       UNCLASSIFIED,
@@ -536,20 +534,20 @@ void ExternalReferenceTable::PopulateTable(Isolate* isolate) {
       UNCLASSIFIED,
       53,
       "Runtime::AllocateInNewSpace");
+  Add(ExternalReference(Runtime::kAllocateInTargetSpace, isolate).address(),
+      UNCLASSIFIED,
+      54,
+      "Runtime::AllocateInTargetSpace");
   Add(ExternalReference::old_pointer_space_allocation_top_address(
       isolate).address(),
       UNCLASSIFIED,
-      54,
+      55,
       "Heap::OldPointerSpaceAllocationTopAddress");
   Add(ExternalReference::old_pointer_space_allocation_limit_address(
       isolate).address(),
       UNCLASSIFIED,
-      55,
-      "Heap::OldPointerSpaceAllocationLimitAddress");
-  Add(ExternalReference(Runtime::kAllocateInOldPointerSpace, isolate).address(),
-      UNCLASSIFIED,
       56,
-      "Runtime::AllocateInOldPointerSpace");
+      "Heap::OldPointerSpaceAllocationLimitAddress");
   Add(ExternalReference::old_data_space_allocation_top_address(
       isolate).address(),
       UNCLASSIFIED,
@@ -560,30 +558,26 @@ void ExternalReferenceTable::PopulateTable(Isolate* isolate) {
       UNCLASSIFIED,
       58,
       "Heap::OldDataSpaceAllocationLimitAddress");
-  Add(ExternalReference(Runtime::kAllocateInOldDataSpace, isolate).address(),
-      UNCLASSIFIED,
-      59,
-      "Runtime::AllocateInOldDataSpace");
   Add(ExternalReference::new_space_high_promotion_mode_active_address(isolate).
       address(),
       UNCLASSIFIED,
-      60,
+      59,
       "Heap::NewSpaceAllocationLimitAddress");
   Add(ExternalReference::allocation_sites_list_address(isolate).address(),
       UNCLASSIFIED,
-      61,
+      60,
       "Heap::allocation_sites_list_address()");
   Add(ExternalReference::record_object_allocation_function(isolate).address(),
       UNCLASSIFIED,
-      62,
+      61,
       "HeapProfiler::RecordObjectAllocationFromMasm");
   Add(ExternalReference::address_of_uint32_bias().address(),
       UNCLASSIFIED,
-      63,
+      62,
       "uint32_bias");
   Add(ExternalReference::get_mark_code_as_executed_function(isolate).address(),
       UNCLASSIFIED,
-      64,
+      63,
       "Code::MarkCodeAsExecuted");
 
   // Add a small set of deopt entry addresses to encoder without generating the
@@ -595,7 +589,7 @@ void ExternalReferenceTable::PopulateTable(Isolate* isolate) {
         entry,
         Deoptimizer::LAZY,
         Deoptimizer::CALCULATE_ENTRY_ADDRESS);
-    Add(address, LAZY_DEOPTIMIZATION, 64 + entry, "lazy_deopt");
+    Add(address, LAZY_DEOPTIMIZATION, entry, "lazy_deopt");
   }
 }
 
