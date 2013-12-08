@@ -9775,6 +9775,7 @@ static MaybeObject* Allocate(Isolate* isolate,
   RUNTIME_ASSERT(IsAligned(size, kPointerSize));
   RUNTIME_ASSERT(size > 0);
   Heap* heap = isolate->heap();
+  if (double_align) size += kPointerSize;
   RUNTIME_ASSERT(size <= heap->MaxRegularSpaceAllocationSize());
   Object* allocation;
   { MaybeObject* maybe_allocation;
@@ -9785,6 +9786,10 @@ static MaybeObject* Allocate(Isolate* isolate,
       maybe_allocation = heap->paged_space(space)->AllocateRaw(size);
     }
     if (maybe_allocation->ToObject(&allocation)) {
+      if (double_align) {
+        allocation = heap->EnsureDoubleAligned(HeapObject::cast(allocation),
+                                               size);
+      }
       heap->CreateFillerObjectAt(HeapObject::cast(allocation)->address(), size);
     }
     return maybe_allocation;
