@@ -9791,6 +9791,7 @@ static MaybeObject* Allocate(Isolate* isolate,
                                                size);
       }
       heap->CreateFillerObjectAt(HeapObject::cast(allocation)->address(), size);
+      return allocation;
     }
     return maybe_allocation;
   }
