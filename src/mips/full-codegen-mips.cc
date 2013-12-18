@@ -183,7 +183,8 @@ void FullCodeGenerator::Generate() {
       // Emit a loop to initialize stack cells for locals when optimizing for
       // size. Otherwise, unroll the loop for maximum performance.
       __ LoadRoot(t5, Heap::kUndefinedValueRootIndex);
-      if (FLAG_optimize_for_size && locals_count > 4) {
+      if (FLAG_optimize_for_size && locals_count > 4 ||
+          !is_int16(locals_count)) {
         Label loop;
         __ li(a2, Operand(locals_count));
         __ bind(&loop);
@@ -191,8 +192,9 @@ void FullCodeGenerator::Generate() {
         __ push(t5);
         __ Branch(&loop, gt, a2, Operand(zero_reg));
       } else {
+        __  Subu(sp, sp, Operand(locals_count * kPointerSize));
         for (int i = 0; i < locals_count; i++) {
-          __ push(t5);
+          __ sw(t5, MemOperand(sp, i * kPointerSize));
         }
       }
     }
